@@ -30,7 +30,9 @@ public class UserFrame extends javax.swing.JFrame {
         userService.addUser(newUser2);
         userService.addUser(newUser3);
         userService.addUser(newUser4);
-        model =new AbstractTableModel () {
+        model =new AbstractTableModel () 
+        
+        {
             @Override
             public int getRowCount() {
                 return userService.getSize();
@@ -79,9 +81,9 @@ public class UserFrame extends javax.swing.JFrame {
                 }
                 return "";
             }
-            
-        }
+        };
         tableUsers.setModel(model);
+        enableForm(false);
     }
 
     /**
@@ -349,9 +351,29 @@ public class UserFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
-        // TODO add your handling code here:
+        clearForm();
     }//GEN-LAST:event_btnClearActionPerformed
 
+    private void clearForm(){
+        txtLogin.setText("");
+        txtPassword.setText("");
+        txtName.setText("");
+        cbRole.setSelectedIndex(0);
+        rdMale.setSelected(true);
+        txtLogin.requestFocus();
+    }
+    
+    private void enableForm(boolean  isEnabled){
+        txtLogin.setEnabled(isEnabled);
+        txtPassword.setEnabled(isEnabled);
+        txtName.setEnabled(isEnabled);
+        cbRole.setEnabled(isEnabled);
+        rdMale.setEnabled(isEnabled);
+        rdFemale.setEnabled(isEnabled);
+        btnSave.setEnabled(isEnabled);
+        btnClear.setEnabled(isEnabled);
+    }
+    
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         int index = tableUsers.getSelectedRow();
         System.out.println(userService.getUser(index));

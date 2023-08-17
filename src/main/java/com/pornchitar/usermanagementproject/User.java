@@ -17,10 +17,9 @@ public class User implements Serializable{
     private String password;
     private char gender;
     private char role;
-    private static int lastID = 1;
 
     public User(String login, String name, String password, char gender, char role) {
-        this(User.lastID++, login, name, password, gender, role);
+        this( -1, login, name, password, gender, role);
     }
 
     public User(int id,String login, String name, String password, char gender, char role) {
@@ -78,14 +77,6 @@ public class User implements Serializable{
 
     public void setRole(char role) {
         this.role = role;
-    }
-
-    public static int getLastID() {
-        return lastID;
-    }
-
-    public static void setLastID(int lastID) {
-        User.lastID = lastID;
     }
 
     @Override

@@ -48,7 +48,6 @@ public class UserManagementProject {
         System.out.println(userList.get(0));
         for(User u: userList){
             System.out.println(u);
-        
         }
     }
 }

@@ -41,4 +41,14 @@ public class UserService {
             System.out.println(u);
         }
     }
+    
+    User updateUser(int index, User updatedUser){
+        User user = userList.get(index);
+        user.setLogin(updatedUser.getLogin());
+        user.setName(updatedUser.getName());
+        user.setPassword(updatedUser.getPassword());
+        user.setGender(updatedUser.getGender());
+        user.setRole(updatedUser.getRole());
+        return user;
+    }
 }

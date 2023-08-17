@@ -11,8 +11,8 @@ import javax.swing.table.AbstractTableModel;
  * @author ASUS
  */
 public class UserFrame extends javax.swing.JFrame {
-
     private final AbstractTableModel model;
+    private int userEditedIndex = -1;
 
     /**
      * Creates new form UserFrame
@@ -110,7 +110,7 @@ public class UserFrame extends javax.swing.JFrame {
         cbRole = new javax.swing.JComboBox<>();
         btnSave = new javax.swing.JButton();
         btnClear = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
+        lblUserID = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableUsers = new javax.swing.JTable();
         btnAddnew = new javax.swing.JButton();
@@ -179,7 +179,7 @@ public class UserFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabel6.setText("-1");
+        lblUserID.setText("-1");
 
         tableUsers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -206,7 +206,7 @@ public class UserFrame extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel6)
+                                .addComponent(lblUserID)
                                 .addGap(74, 74, 74)
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)))
@@ -249,7 +249,7 @@ public class UserFrame extends javax.swing.JFrame {
                     .addComponent(txtLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
                     .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
+                    .addComponent(lblUserID))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -353,7 +353,11 @@ public class UserFrame extends javax.swing.JFrame {
         }
         User newUser = new User(login, name, password, gender, role);
         System.out.println(newUser);
-        userService.addUser(newUser);
+        if(userEditedIndex<0){
+            userService.addUser(newUser);
+        }else{
+            userService.updateUser(userEditedIndex,newUser);
+        }
         model.fireTableDataChanged();
         userService.logUserList();
         clearForm();
@@ -385,8 +389,24 @@ public class UserFrame extends javax.swing.JFrame {
     }
     
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        int index = tableUsers.getSelectedRow();
-        System.out.println(userService.getUser(index));
+        userEditedIndex = tableUsers.getSelectedRow();
+        User editedUser = userService.getUser(userEditedIndex);
+        enableForm(true);
+        txtLogin.setText(editedUser.getLogin());
+        txtName.setText(editedUser.getName());
+        txtPassword.setText(editedUser.getPassword());
+        if(editedUser.getRole() == 'A'){
+            cbRole.setSelectedIndex(0);
+        }else{
+            cbRole.setSelectedIndex(1);
+        }
+        if(editedUser.getGender()== 'M'){
+            rdMale.setSelected(true);
+        }else{
+            rdFemale.setSelected(false);
+        }
+        lblUserID.setText(""+editedUser.getId());
+        System.out.println(userService.getUser(userEditedIndex));
         
     }//GEN-LAST:event_btnEditActionPerformed
 
@@ -443,9 +463,9 @@ public class UserFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblUserID;
     private javax.swing.JRadioButton rdFemale;
     private javax.swing.JRadioButton rdMale;
     private javax.swing.JTable tableUsers;

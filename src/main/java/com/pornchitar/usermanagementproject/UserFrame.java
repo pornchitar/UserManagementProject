@@ -4,6 +4,8 @@
  */
 package com.pornchitar.usermanagementproject;
 
+import javax.swing.table.AbstractTableModel;
+
 /**
  *
  * @author ASUS
@@ -15,6 +17,68 @@ public class UserFrame extends javax.swing.JFrame {
      */
     public UserFrame() {
         initComponents();
+        userService = new UserService();
+        User newAdmin = new User("admin", "Adminnistrator", "pass@1234", 'M', 'A');
+        User newUser1 = new User("user1", "User 1", "pass@1234", 'M', 'U');
+        User newUser2 = new User("user2", "User 2", "pass@1234", 'M', 'U');
+        User newUser3 = new User("user3", "User 3", "pass@1234", 'M', 'U');
+        User newUser4 = new User("user4", "User 4", "pass@1234", 'M', 'U');
+        userService.addUser(newAdmin);
+        userService.addUser(newUser1);
+        userService.addUser(newUser2);
+        userService.addUser(newUser3);
+        userService.addUser(newUser4);
+        tableUsers.setModel(new AbstractTableModel () {
+            @Override
+            public int getRowCount() {
+                return userService.getSize();
+            }
+
+            @Override
+            public int getColumnCount() {
+                return 5;
+            }
+
+            @Override
+            public Object getValueAt(int rowIndex, int columnIndex) {
+                User user = userService.getUser(rowIndex);
+                switch (columnIndex) {
+                    case 0:
+                        return  user.getId();
+                    case 1:
+                        return  user.getLogin();
+                    case 2:
+                        return  user.getName();
+                    case 3:
+                        return  user.getGender();
+                    case 4:
+                        return  user.getRole();
+                    default:
+                        break;
+                }
+                return "";
+            }
+
+            @Override
+            public String getColumnName(int column) {
+                switch (column) {
+                    case 0:
+                        return  "ID";
+                    case 1:
+                        return  "LOGIN";
+                    case 2:
+                        return  "NAME";
+                    case 3:
+                        return  "GENDER";
+                    case 4:
+                        return  "ROLE";
+                    default:
+                        break;
+                }
+                return "";
+            }
+            
+        });
     }
 
     /**
@@ -42,6 +106,8 @@ public class UserFrame extends javax.swing.JFrame {
         btnSave = new javax.swing.JButton();
         btnClear = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableUsers = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -107,6 +173,19 @@ public class UserFrame extends javax.swing.JFrame {
 
         jLabel6.setText("-1");
 
+        tableUsers.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(tableUsers);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -147,7 +226,10 @@ public class UserFrame extends javax.swing.JFrame {
                             .addComponent(cbRole, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 547, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -174,7 +256,9 @@ public class UserFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSave)
                     .addComponent(btnClear))
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(105, 105, 105))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -189,9 +273,8 @@ public class UserFrame extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(239, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -218,7 +301,20 @@ public class UserFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_rdFemaleActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        // TODO add your handling code here:
+        String login = txtLogin.getText();
+        String name = txtName.getText();
+        String password = new String(txtPassword.getPassword());
+        char role = 'U';
+        if(cbRole.getSelectedItem().equals("Admin")){
+            role = 'A';
+        }
+        
+        char gender = 'M';
+        if(rdFemale.isSelected()){
+            gender = 'F';
+        }
+        User newUser = new User(login, name, password, gender, role);
+        System.out.println(newUser);
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
@@ -272,10 +368,13 @@ public class UserFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JRadioButton rdFemale;
     private javax.swing.JRadioButton rdMale;
+    private javax.swing.JTable tableUsers;
     private javax.swing.JTextField txtLogin;
     private javax.swing.JTextField txtName;
     private javax.swing.JPasswordField txtPassword;
     // End of variables declaration//GEN-END:variables
+    private UserService userService;
 }

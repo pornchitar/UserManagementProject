@@ -50,9 +50,9 @@ public class UserFrame extends javax.swing.JFrame {
                     case 2:
                         return  user.getName();
                     case 3:
-                        return  user.getGender();
+                        return  user.getGenderString();
                     case 4:
-                        return  user.getRole();
+                        return  user.getRoleString();
                     default:
                         break;
                 }

@@ -66,6 +66,14 @@ public class User implements Serializable{
     public char getGender() {
         return gender;
     }
+    
+    public String getGenderString() {
+        if(gender == 'M'){
+            return "Male";
+        }else{
+            return "Female";
+        }
+    }
 
     public void setGender(char gender) {
         this.gender = gender;
@@ -73,6 +81,14 @@ public class User implements Serializable{
 
     public char getRole() {
         return role;
+    }
+    
+    public String getRoleString() {
+        if(gender == 'M'){
+            return "Male";
+        }else{
+            return "Female";
+        }
     }
 
     public void setRole(char role) {

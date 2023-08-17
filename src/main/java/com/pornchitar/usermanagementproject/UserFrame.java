@@ -12,6 +12,8 @@ import javax.swing.table.AbstractTableModel;
  */
 public class UserFrame extends javax.swing.JFrame {
 
+    private final AbstractTableModel model;
+
     /**
      * Creates new form UserFrame
      */
@@ -28,7 +30,7 @@ public class UserFrame extends javax.swing.JFrame {
         userService.addUser(newUser2);
         userService.addUser(newUser3);
         userService.addUser(newUser4);
-        tableUsers.setModel(new AbstractTableModel () {
+        model =new AbstractTableModel () {
             @Override
             public int getRowCount() {
                 return userService.getSize();
@@ -78,7 +80,8 @@ public class UserFrame extends javax.swing.JFrame {
                 return "";
             }
             
-        });
+        }
+        tableUsers.setModel(model);
     }
 
     /**

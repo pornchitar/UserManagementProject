@@ -284,6 +284,11 @@ public class UserFrame extends javax.swing.JFrame {
         });
 
         btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -357,6 +362,7 @@ public class UserFrame extends javax.swing.JFrame {
             userService.addUser(newUser);
         }else{
             userService.updateUser(userEditedIndex,newUser);
+            userEditedIndex = -1;
         }
         model.fireTableDataChanged();
         userService.logUserList();
@@ -375,6 +381,7 @@ public class UserFrame extends javax.swing.JFrame {
         cbRole.setSelectedIndex(0);
         rdMale.setSelected(true);
         txtLogin.requestFocus();
+        lblUserID.setText("-1");
     }
     
     private void enableForm(boolean  isEnabled){
@@ -414,6 +421,12 @@ public class UserFrame extends javax.swing.JFrame {
         enableForm(true);
         txtLogin.requestFocus();
     }//GEN-LAST:event_btnAddnewActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        int index = tableUsers.getSelectedRow();
+        userService.deleteUser(index);
+        model.fireTableDataChanged();
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
     /**
      * @param args the command line arguments

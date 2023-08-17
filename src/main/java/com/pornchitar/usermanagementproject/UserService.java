@@ -51,4 +51,8 @@ public class UserService {
         user.setRole(updatedUser.getRole());
         return user;
     }
+    
+    User deleteUser(int index){
+        return userList.remove(index);
+    }
 }

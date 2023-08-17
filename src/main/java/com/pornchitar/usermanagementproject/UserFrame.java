@@ -270,6 +270,11 @@ public class UserFrame extends javax.swing.JFrame {
         );
 
         btnAddnew.setText("Addnew");
+        btnAddnew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddnewActionPerformed(evt);
+            }
+        });
 
         btnEdit.setText("Edit");
         btnEdit.addActionListener(new java.awt.event.ActionListener() {
@@ -348,6 +353,11 @@ public class UserFrame extends javax.swing.JFrame {
         }
         User newUser = new User(login, name, password, gender, role);
         System.out.println(newUser);
+        userService.addUser(newUser);
+        model.fireTableDataChanged();
+        userService.logUserList();
+        clearForm();
+        enableForm(false);
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
@@ -379,6 +389,11 @@ public class UserFrame extends javax.swing.JFrame {
         System.out.println(userService.getUser(index));
         
     }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnAddnewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddnewActionPerformed
+        enableForm(true);
+        txtLogin.requestFocus();
+    }//GEN-LAST:event_btnAddnewActionPerformed
 
     /**
      * @param args the command line arguments

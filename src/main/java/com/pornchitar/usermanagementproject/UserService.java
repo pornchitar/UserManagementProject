@@ -35,4 +35,10 @@ public class UserService {
     public int getSize(){
         return userList.size();
     }
+    
+    public void logUserList(){
+        for(User u:userList){
+            System.out.println(u);
+        }
+    }
 }
